@@ -4,15 +4,92 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".screen.MainActivity">
 
     <TextView
+        android:id="@+id/tv_result"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:textColor="@color/primary"
+        android:textSize="32dp"
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/tv_result_sub"
+        app:layout_constraintVertical_chainStyle="packed"
+        />
+    <TextView
+        android:id="@+id/tv_result_sub"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:textSize="14dp"
+        android:text="@string/text_isSelected"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_result"
+        app:layout_constraintBottom_toTopOf="@id/roulette"
+        />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/grp_result_text"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:constraint_referenced_ids="tv_result, tv_result_sub"
+        android:visibility="gone"/>
+
+    <ImageView
+        android:id="@+id/iv_background_roulette"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginHorizontal="16dp"
+        android:background="@drawable/bg_roulette"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/btn_roll"
+        app:layout_constraintDimensionRatio="1:1"
+        />
+    <com.lanhee.fortunewheel.widget.RouletteView
+        android:id="@+id/roulette"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_margin="16dp"
+        app:layout_constraintStart_toStartOf="@id/iv_background_roulette"
+        app:layout_constraintEnd_toEndOf="@id/iv_background_roulette"
+        app:layout_constraintTop_toTopOf="@id/iv_background_roulette"
+        app:layout_constraintBottom_toBottomOf="@id/iv_background_roulette"
+         />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/img_stopper"
+        app:layout_constraintStart_toStartOf="@id/roulette"
+        app:layout_constraintEnd_toEndOf="@id/roulette"
+        app:layout_constraintTop_toTopOf="@id/roulette"
+        app:layout_constraintBottom_toTopOf="@id/roulette" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/img_center"
+        app:layout_constraintStart_toStartOf="@id/roulette"
+        app:layout_constraintEnd_toEndOf="@id/roulette"
+        app:layout_constraintTop_toTopOf="@id/roulette"
+        app:layout_constraintBottom_toBottomOf="@id/roulette" />
+
+    <Button
+        android:id="@+id/btn_roll"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginBottom="16dp"
+        android:text="@string/action_roll"
+        android:textColor="#FFF"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

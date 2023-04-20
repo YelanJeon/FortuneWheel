@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">원판돌리기</string>
+    <string name="action_save">저장</string>
+    <string name="action_load">불러오기</string>
+    <string name="action_share">공유하기</string>
+    <string name="action_list">리스트 설정</string>
+</resources>

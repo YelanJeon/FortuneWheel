@@ -1,3 +1,14 @@
 <resources>
     <string name="app_name">FortuneWheel</string>
+    <string name="action_save">Save</string>
+    <string name="action_load">Load</string>
+    <string name="action_share">Share</string>
+    <string name="action_list">List</string>
+    <string name="action_roll">Roll</string>
+    <string name="action_add">Add</string>
+    <string name="action_apply">Apply</string>
+    <string name="title_list">Set Items</string>
+    <string name="action_reset">Reset</string>
+    <string name="text_isSelected">is Selected!!</string>
+    <string name="title_changeItem">Change Item</string>
 </resources>
