@@ -8,18 +8,13 @@ import android.graphics.Paint
 import android.graphics.RectF
 import android.os.Looper
 import android.util.AttributeSet
-import android.util.Log
-import android.util.Range
 import android.view.MotionEvent
 import android.view.View
 import android.view.animation.DecelerateInterpolator
 import android.view.animation.LinearInterpolator
 import androidx.annotation.FloatRange
 import com.lanhee.fortunewheel.R
-import com.lanhee.fortunewheel.inter.OnRouletteListener
 import java.util.*
-import java.util.logging.Handler
-import kotlin.concurrent.timerTask
 import kotlin.math.cos
 import kotlin.math.sin
 
@@ -44,6 +39,12 @@ class RouletteView : View {
     var listener: OnRouletteListener? = null    //룰렛 리스너
 
     var isRolling = false  //지금 돌아가는지 여부
+
+
+    interface OnRouletteListener {
+        fun onRouletteClick(position: Int)
+        fun onRouletteStop(position: Int)
+    }
 
 
     constructor(context: Context) : super(context)

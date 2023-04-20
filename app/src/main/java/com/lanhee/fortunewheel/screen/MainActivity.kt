@@ -16,9 +16,9 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.lanhee.fortunewheel.R
 import com.lanhee.fortunewheel.data.SaveData
 import com.lanhee.fortunewheel.databinding.ActivityMainBinding
-import com.lanhee.fortunewheel.inter.OnRouletteListener
 import com.lanhee.fortunewheel.utils.AppDatabase
 import com.lanhee.fortunewheel.utils.ScreenCaptureHelper
+import com.lanhee.fortunewheel.widget.RouletteView
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -50,7 +50,7 @@ class MainActivity : AppCompatActivity() {
 
         setDefaultSetting()
 
-        rouletteView.listener = object : OnRouletteListener {
+        rouletteView.listener = object : RouletteView.OnRouletteListener {
             override fun onRouletteClick(position: Int) {
                 val defaultText = rouletteView.getItems()[position]
                 if(isSettingMode) {
