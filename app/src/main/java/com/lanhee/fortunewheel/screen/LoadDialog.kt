@@ -110,6 +110,7 @@ class LoadDialog(context: Context) : Dialog(context) {
         fun bind(saveData: SaveData) {
             itemView.findViewById<TextView>(R.id.tv_title).text = saveData.title
             val chipGroup = itemView.findViewById<ChipGroup>(R.id.chg)
+            chipGroup.removeAllViews()
             saveData.items.forEach {
                 val chip = createChip(it)
                 chipGroup.addView(chip)
