@@ -1,7 +1,21 @@
 <resources>
     <string name="app_name">원판돌리기</string>
+
+    <string name="title_list">리스트 설정</string>
+    <string name="title_changeItem">항목 바꾸기</string>
+    <string name="title_save">저장</string>
+    <string name="title_load">불러오기</string>
+
     <string name="action_save">저장</string>
     <string name="action_load">불러오기</string>
-    <string name="action_share">공유하기</string>
+    <string name="action_share">공유</string>
     <string name="action_list">리스트 설정</string>
+    <string name="action_roll">돌리기</string>
+    <string name="action_add">추가</string>
+    <string name="action_apply">적용</string>
+    <string name="action_reset">초기화</string>
+
+    <string name="text_isSelected">선택되었습니다!!</string>
+    <string name="text_save_hint">제목을 입력하세요</string>
+    <string name="text_empty_save">저장된 리스트가 없습니다</string>
 </resources>

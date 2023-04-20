@@ -1,5 +1,11 @@
 <resources>
     <string name="app_name">FortuneWheel</string>
+
+    <string name="title_list">Set Items</string>
+    <string name="title_changeItem">Change Item</string>
+    <string name="title_save">Save</string>
+    <string name="title_load">Load</string>
+
     <string name="action_save">Save</string>
     <string name="action_load">Load</string>
     <string name="action_share">Share</string>
@@ -7,13 +13,10 @@
     <string name="action_roll">Roll</string>
     <string name="action_add">Add</string>
     <string name="action_apply">Apply</string>
-    <string name="title_list">Set Items</string>
     <string name="action_reset">Reset</string>
-    <string name="text_isSelected">is Selected!!</string>
-    <string name="title_changeItem">Change Item</string>
-    <string name="title_save">Save</string>
-    <string name="text_save_hint">Input title...</string>
-    <string name="title_load">Load</string>
     <string name="action_delete">Delete</string>
+
+    <string name="text_isSelected">is Selected!!</string>
+    <string name="text_save_hint">Input title...</string>
     <string name="text_empty_save">No item saved</string>
 </resources>

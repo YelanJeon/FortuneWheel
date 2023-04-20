@@ -11,9 +11,9 @@ import android.view.MotionEvent
 import android.view.View
 import android.widget.Toast
 import androidx.core.content.FileProvider
-import androidx.room.Room
+import androidx.core.splashscreen.SplashScreen
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.lanhee.fortunewheel.R
-import com.lanhee.fortunewheel.data.SaveDao
 import com.lanhee.fortunewheel.data.SaveData
 import com.lanhee.fortunewheel.databinding.ActivityMainBinding
 import com.lanhee.fortunewheel.inter.OnRouletteListener
@@ -42,6 +42,9 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        installSplashScreen()
+
         setContentView(binding.root)
         supportActionBar?.setDisplayShowTitleEnabled(false)
 
