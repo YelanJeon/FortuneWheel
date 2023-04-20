@@ -11,4 +11,9 @@
     <string name="action_reset">Reset</string>
     <string name="text_isSelected">is Selected!!</string>
     <string name="title_changeItem">Change Item</string>
+    <string name="title_save">Save</string>
+    <string name="text_save_hint">Input title...</string>
+    <string name="title_load">Load</string>
+    <string name="action_delete">Delete</string>
+    <string name="text_empty_save">No item saved</string>
 </resources>

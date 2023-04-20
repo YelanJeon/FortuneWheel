@@ -79,11 +79,4 @@ class ListDialog(context: Context) : Dialog(context) {
     fun checkApplyEnabled() {
         binding.btnApply.isEnabled = binding.chgList.childCount > 1
     }
-
-    override fun onStart() {
-        super.onStart()
-    }
-
-
-
 }

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="16dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto" >
+
+    <TextView
+        android:id="@+id/tv_dlg_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/title_changeItem"
+        android:textColor="@color/primary"
+        android:textSize="16dp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        />
+    <EditText
+        android:id="@+id/et_input"
+        android:layout_width="0dp"
+        android:layout_height="36dp"
+        android:layout_marginTop="8dp"
+        android:maxLines="1"
+        android:textColor="@color/primary"
+        android:background="@drawable/bg_edittext"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_dlg_title" />
+
+    <Button
+        android:id="@+id/btn_apply"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:enabled="false"
+        android:text="@string/action_apply"
+        android:textColor="#FFF"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/et_input"
+        />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

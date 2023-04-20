@@ -9,36 +9,36 @@
         android:id="@+id/tv_dlg_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/title_changeItem"
+        android:text="@string/title_load"
         android:textColor="@color/primary"
         android:textSize="16dp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         />
-    <EditText
-        android:id="@+id/et_change_input"
-        android:layout_width="0dp"
-        android:layout_height="36dp"
-        android:layout_marginTop="8dp"
-        android:maxLines="1"
-        android:textColor="@color/primary"
-        android:background="@drawable/bg_edittext"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_dlg_title" />
 
-    <Button
-        android:id="@+id/btn_apply"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rcv_load"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:enabled="false"
-        android:text="@string/action_apply"
-        android:textColor="#FFF"
+        android:layout_height="0dp"
+        android:layout_marginVertical="8dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/et_change_input"
+        app:layout_constraintTop_toBottomOf="@id/tv_dlg_title"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_empty"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:text="@string/text_empty_save"
+        android:textColor="#AAA"
+        android:gravity="center"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="@id/rcv_load"
+        app:layout_constraintEnd_toEndOf="@id/rcv_load"
+        app:layout_constraintTop_toTopOf="@id/rcv_load"
+        app:layout_constraintBottom_toBottomOf="@id/rcv_load"
         />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

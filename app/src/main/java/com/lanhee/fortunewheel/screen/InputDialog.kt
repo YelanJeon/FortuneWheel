@@ -5,17 +5,16 @@ import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.view.ViewGroup
-import com.google.android.material.chip.Chip
-import com.lanhee.fortunewheel.databinding.DlgChangeItemBinding
+import com.lanhee.fortunewheel.databinding.DlgInputBinding
 import com.lanhee.fortunewheel.utils.Utils
 
-class ChangeDialog(context: Context) : Dialog(context) {
-    var defaultText: String? = null
-    val binding by lazy { DlgChangeItemBinding.inflate(layoutInflater) }
-    var listener: OnChangeInput? = null
+class InputDialog(context: Context) : Dialog(context) {
+    var title: String? = null
+    var hintText: String? = null
+    val binding by lazy { DlgInputBinding.inflate(layoutInflater) }
+    var listener: OnInputText? = null
 
-    interface OnChangeInput {
+    interface OnInputText {
         fun onChanged(text: String)
     }
 
@@ -28,11 +27,11 @@ class ChangeDialog(context: Context) : Dialog(context) {
             it.attributes.width = (Utils.getScreenWidth(context) * 0.8f).toInt()
         }
 
-        defaultText?.let {
-            binding.etChangeInput.hint = defaultText
-        }
+        title?.let { binding.tvDlgTitle.text = it }
 
-        binding.etChangeInput.addTextChangedListener(object : TextWatcher {
+        hintText?.let {binding.etInput.hint = it }
+
+        binding.etInput.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) { }
 
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) { }
@@ -43,7 +42,7 @@ class ChangeDialog(context: Context) : Dialog(context) {
         })
 
         binding.btnApply.setOnClickListener {
-            listener?.onChanged(binding.etChangeInput.text.toString())
+            listener?.onChanged(binding.etInput.text.toString())
             dismiss()
         }
     }
