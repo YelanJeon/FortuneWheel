@@ -1,4 +1,4 @@
-package com.lanhee.fortunewheel.screen
+package com.lanhee.fortunewheel.screen.listdialog
 
 import android.app.Dialog
 import android.content.Context

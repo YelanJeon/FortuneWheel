@@ -1,14 +1,11 @@
-package com.lanhee.fortunewheel.screen
+package com.lanhee.fortunewheel.screen.loaddialog
 
 import android.app.Dialog
 import android.content.Context
 import android.graphics.Rect
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -18,7 +15,6 @@ import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import com.lanhee.fortunewheel.R
 import com.lanhee.fortunewheel.data.SaveData
-import com.lanhee.fortunewheel.databinding.DlgListBinding
 import com.lanhee.fortunewheel.databinding.DlgLoadBinding
 import com.lanhee.fortunewheel.utils.AppDatabase
 import com.lanhee.fortunewheel.utils.Utils
@@ -54,7 +50,7 @@ class LoadDialog(context: Context) : Dialog(context) {
         })
 
         CoroutineScope(Dispatchers.IO).launch {
-            val db = AppDatabase.getInstance(context)
+            val db = AppDatabase.getInstance()
             db?.let { db ->
                 val list = db.saveDao().getAll()
                 recyclerView.adapter = LoadAdapter(list.toMutableList())
@@ -83,7 +79,7 @@ class LoadDialog(context: Context) : Dialog(context) {
             }
             holder.itemView.findViewById<ImageButton>(R.id.btn_delete).setOnClickListener {
                 CoroutineScope(Dispatchers.IO).launch {
-                    val db = AppDatabase.getInstance(context)
+                    val db = AppDatabase.getInstance()
                     db?.let { db ->
                         val position = holder.layoutPosition
                         db.saveDao().delete(list[position])
