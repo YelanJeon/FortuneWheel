@@ -146,7 +146,7 @@ class MainActivity : AppCompatActivity(), ScreenCaptureHelper.Captureable {
                 }
 
                 R.id.action_load -> {
-                    val dialog = LoadDialog(this@MainActivity)
+                    val dialog = LoadDialog()
                     dialog.apply {
                         listener = object : LoadDialog.OnLoadSelect {
                             override fun onSelect(items: Array<String>) {
@@ -157,7 +157,7 @@ class MainActivity : AppCompatActivity(), ScreenCaptureHelper.Captureable {
                             }
                         }
                     }
-                    dialog.show()
+                    dialog.show(supportFragmentManager, "load")
                 }
 
                 R.id.action_share -> {
