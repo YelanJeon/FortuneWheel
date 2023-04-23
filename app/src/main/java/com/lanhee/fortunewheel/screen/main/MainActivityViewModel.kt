@@ -1,28 +1,14 @@
 package com.lanhee.fortunewheel.screen.main
 
-import android.app.Application
 import android.content.Intent
-import android.graphics.Bitmap
 import android.net.Uri
-import androidx.core.content.FileProvider
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.lanhee.fortunewheel.BuildConfig
-import com.lanhee.fortunewheel.MainApplication
-import com.lanhee.fortunewheel.data.SaveData
-import com.lanhee.fortunewheel.inter.Shareable
+import com.lanhee.fortunewheel.repositories.DatabaseRepository
 import com.lanhee.fortunewheel.utils.AppDatabase
 import com.lanhee.fortunewheel.utils.PreferenceHelper
 import com.lanhee.fortunewheel.utils.ScreenCaptureHelper
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import java.io.File
-import java.io.FileOutputStream
-import java.text.SimpleDateFormat
-import java.util.Date
 
 class MainActivityViewModel: ViewModel() {
     private val _isSettingMode = MutableLiveData<Boolean>()
@@ -36,6 +22,8 @@ class MainActivityViewModel: ViewModel() {
 
     private val _intentToShare = MutableLiveData<Intent>()
     val intentToShare = _intentToShare as LiveData<Intent>
+
+    private val databaseRepository by lazy { DatabaseRepository(AppDatabase.getInstance()) }
 
     fun setItem(text: String, position: Int) {
         val temp = Array(_items.value!!.size) { index -> _items.value!![index] }
@@ -72,12 +60,7 @@ class MainActivityViewModel: ViewModel() {
     }
 
     fun saveItems(title: String) {
-        CoroutineScope(Dispatchers.IO).launch {
-            val saveData = SaveData(title = title, items = items.value!!)
-
-            val db = AppDatabase.getInstance()
-            db.saveDao().insert(saveData)
-        }
+        databaseRepository.saveItems(title, _items.value!!)
     }
 
     fun captureAndShare(captureable: ScreenCaptureHelper.Captureable) {
