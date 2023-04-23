@@ -67,7 +67,7 @@ class MainActivity : AppCompatActivity(), ScreenCaptureHelper.Captureable {
             override fun onRouletteClick(position: Int) {
                 val defaultText = viewModel.items.value!![position]
                 if(viewModel.isSettingMode()) {
-                    val dialog = InputDialog(this@MainActivity)
+                    val dialog = InputDialog()
                     dialog.apply {
                         title = resources.getString(R.string.title_changeItem)
                         hintText = defaultText
@@ -77,7 +77,7 @@ class MainActivity : AppCompatActivity(), ScreenCaptureHelper.Captureable {
                             }
                         }
                     }
-                    dialog.show()
+                    dialog.show(supportFragmentManager, "roullet Click")
                 }else{
                     Toast.makeText(baseContext, defaultText, Toast.LENGTH_SHORT).show()
                 }
@@ -121,28 +121,28 @@ class MainActivity : AppCompatActivity(), ScreenCaptureHelper.Captureable {
             when (item.itemId) {
                 R.id.action_list -> {
 
-                    val dialog = ListDialog(this@MainActivity)
+                    val dialog = ListDialog()
                     dialog.defaultList = rouletteView.getItems()
                     dialog.listener = object : ListDialog.OnListApply {
                         override fun onListApply(items: Array<String>) {
                             viewModel.setItems(items)
                         }
                     }
-                    dialog.show()
+                    dialog.show(supportFragmentManager, "list")
                 }
 
                 R.id.action_save -> {
-                    val dialog = InputDialog(this@MainActivity)
+                    val dialog = InputDialog()
                     dialog.apply {
-                        title = resources.getString(R.string.title_save)
-                        hintText = resources.getString(R.string.text_save_hint)
+                        title = baseContext.resources.getString(R.string.title_save)
+                        hintText = baseContext.resources.getString(R.string.text_save_hint)
                         listener = object : InputDialog.OnInputText {
                             override fun onChanged(text: String) {
                                 viewModel.saveItems(text)
                             }
                         }
                     }
-                    dialog.show()
+                    dialog.show(supportFragmentManager, "save")
                 }
 
                 R.id.action_load -> {

@@ -5,45 +5,63 @@ import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.view.WindowManager
+import androidx.core.widget.addTextChangedListener
+import androidx.fragment.app.DialogFragment
+import androidx.lifecycle.ViewModelProvider
 import com.lanhee.fortunewheel.databinding.DlgInputBinding
 import com.lanhee.fortunewheel.utils.Utils
 
-class InputDialog(context: Context) : Dialog(context) {
+class InputDialog : DialogFragment() {
     var title: String? = null
     var hintText: String? = null
-    val binding by lazy { DlgInputBinding.inflate(layoutInflater) }
     var listener: OnInputText? = null
+
+    private val binding by lazy { DlgInputBinding.inflate(layoutInflater) }
+    private lateinit var viewModel: InputDialogViewModel
 
     interface OnInputText {
         fun onChanged(text: String)
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        viewModel = ViewModelProvider(this, InputDialogViewModel.Factory())[InputDialogViewModel::class.java]
+        return binding.root
+    }
 
-        setContentView(binding.root)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-        window?.let {
-            it.attributes.width = (Utils.getScreenWidth(context) * 0.8f).toInt()
+        viewModel.inputText.observe(this) {
+            binding.btnApply.isEnabled = !it.isNullOrEmpty()
         }
 
         title?.let { binding.tvDlgTitle.text = it }
-
         hintText?.let {binding.etInput.hint = it }
 
-        binding.etInput.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) { }
-
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) { }
-
-            override fun afterTextChanged(text: Editable?) {
-                binding.btnApply.isEnabled = !text.isNullOrEmpty()
-            }
-        })
+        binding.etInput.addTextChangedListener {
+            viewModel.setInputText(it.toString())
+        }
 
         binding.btnApply.setOnClickListener {
-            listener?.onChanged(binding.etInput.text.toString())
+            listener?.onChanged(viewModel.inputText.value!!)
             dismiss()
+        }
+
+    }
+
+    override fun onStart() {
+        super.onStart()
+        dialog?.window?.let {
+            val width = (Utils.getScreenWidth(requireContext()) * 0.8f).toInt()
+            it.setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT)
         }
     }
 }

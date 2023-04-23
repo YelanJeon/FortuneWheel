@@ -1,82 +1,88 @@
 package com.lanhee.fortunewheel.screen.listdialog
 
-import android.app.Dialog
-import android.content.Context
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
+import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import androidx.core.widget.addTextChangedListener
+import androidx.fragment.app.DialogFragment
+import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.chip.Chip
 import com.lanhee.fortunewheel.databinding.DlgListBinding
 import com.lanhee.fortunewheel.utils.Utils
 
-class ListDialog(context: Context) : Dialog(context) {
+class ListDialog : DialogFragment() {
     var defaultList: Array<String>? = null
-    val binding by lazy { DlgListBinding.inflate(layoutInflater) }
     var listener: OnListApply? = null
+
+    private val binding by lazy { DlgListBinding.inflate(layoutInflater) }
+    private lateinit var viewModel: ListDialogViewModel
 
     interface OnListApply {
         fun onListApply(items: Array<String>)
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        viewModel = ViewModelProvider(this, ListDialogViewModel.Factory())[ListDialogViewModel::class.java]
+        return binding.root
+    }
 
-        setContentView(binding.root)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-        window?.let {
-            it.attributes.width = (Utils.getScreenWidth(context) * 0.8f).toInt()
-            it.attributes.height = (Utils.getScreenHeight(context) * 0.4f).toInt()
-        }
-
-        defaultList?.let { defaultList ->
-            defaultList.forEach {item ->
+        viewModel.items.observe(this) {
+            binding.chgList.removeAllViews()
+            it.forEach { item ->
                 binding.chgList.addView(createChip(item))
-                checkApplyEnabled()
             }
+            binding.btnApply.isEnabled = it.size > 1
         }
 
-        binding.etListInput.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) { }
-
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) { }
-
-            override fun afterTextChanged(text: Editable?) {
-                binding.btnListAdd.isEnabled = !text.isNullOrEmpty()
-            }
-        })
+        viewModel.inputText.observe(this) {
+            binding.btnListAdd.isEnabled = !it.isNullOrEmpty()
+        }
 
         binding.btnListAdd.setOnClickListener {
-            val chip = createChip(binding.etListInput.text.toString())
-            binding.chgList.addView(chip)
-
+            viewModel.addItem(binding.etListInput.text.toString())
             binding.etListInput.text = null
-            checkApplyEnabled()
         }
 
         binding.btnApply.setOnClickListener {
-            val result = Array(binding.chgList.childCount) { index ->
-                (binding.chgList.getChildAt(index) as Chip).text.toString()
-            }
+            val result = viewModel.items.value!!
             listener?.onListApply(result)
             dismiss()
         }
 
+        binding.etListInput.addTextChangedListener {
+            viewModel.setInputText(it.toString())
+        }
 
+        defaultList?.let { defaultList ->
+            viewModel.setItems(defaultList)
+        }
     }
 
     private fun createChip(text: String): Chip {
         val chip = Chip(context)
         chip.isCloseIconVisible = true
         chip.setOnCloseIconClickListener {
-            (it.parent as ViewGroup).removeView(it)
-            checkApplyEnabled()
+            viewModel.deleteItem((it as Chip).text.toString())
         }
         chip.text = text
         return chip
     }
 
-    fun checkApplyEnabled() {
-        binding.btnApply.isEnabled = binding.chgList.childCount > 1
+    override fun onStart() {
+        super.onStart()
+        dialog?.window?.let {
+            val width = (Utils.getScreenWidth(requireContext()) * 0.8f).toInt()
+            val height = (Utils.getScreenHeight(requireContext()) * 0.4f).toInt()
+            it.setLayout(width, height)
+        }
     }
+
 }
