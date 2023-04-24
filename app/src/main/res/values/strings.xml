@@ -19,4 +19,5 @@
     <string name="text_isSelected">is Selected!!</string>
     <string name="text_save_hint">Input title...</string>
     <string name="text_empty_save">No item saved</string>
+    <string name="default_notification_channel_id">fortunewheel</string>
 </resources>

@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "614278004180",
+    "project_id": "fortunewheel2-f44b9",
+    "storage_bucket": "fortunewheel2-f44b9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:614278004180:android:3d2b45899aa9db049bea41",
+        "android_client_info": {
+          "package_name": "com.lanhee.fortunewheel"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "614278004180-go3ul8n6lq1kgaoc8f78ab0u2515l5u6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDwjeba9zF-v2Y2UwimSLHmmIjdNNDrfug"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "614278004180-go3ul8n6lq1kgaoc8f78ab0u2515l5u6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

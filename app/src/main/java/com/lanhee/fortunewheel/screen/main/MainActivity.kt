@@ -1,6 +1,8 @@
 package com.lanhee.fortunewheel.screen.main
 
-import android.content.Intent
+import android.Manifest
+import android.content.pm.PackageManager
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
@@ -8,20 +10,23 @@ import android.view.MenuItem
 import android.view.MotionEvent
 import android.view.View
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
-import androidx.core.content.FileProvider
+import androidx.core.content.ContextCompat
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import com.google.firebase.FirebaseApp
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.ktx.analytics
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.messaging.FirebaseMessaging
 import com.lanhee.fortunewheel.R
 import com.lanhee.fortunewheel.databinding.ActivityMainBinding
-import com.lanhee.fortunewheel.inter.Shareable
 import com.lanhee.fortunewheel.screen.listdialog.ListDialog
 import com.lanhee.fortunewheel.screen.loaddialog.LoadDialog
 import com.lanhee.fortunewheel.screen.inputdialog.InputDialog
 import com.lanhee.fortunewheel.utils.ScreenCaptureHelper
 import com.lanhee.fortunewheel.widget.RouletteView
-import java.io.File
-import java.text.SimpleDateFormat
-import java.util.*
+import java.lang.RuntimeException
 
 class MainActivity : AppCompatActivity(), ScreenCaptureHelper.Captureable {
     private val rouletteView by lazy { binding.roulette }
@@ -29,12 +34,21 @@ class MainActivity : AppCompatActivity(), ScreenCaptureHelper.Captureable {
     private val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
     private val viewModel: MainActivityViewModel by viewModels()
 
+    private val firebaseAnalytics by lazy { Firebase.analytics }
+
+    val requestPermissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { isGranted ->  }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         installSplashScreen()
 
         setContentView(binding.root)
+
+        FirebaseApp.initializeApp(baseContext)
+
         supportActionBar?.setDisplayShowTitleEnabled(false)
 
         viewModel.items.observe(this) {
@@ -91,10 +105,11 @@ class MainActivity : AppCompatActivity(), ScreenCaptureHelper.Captureable {
         binding.btnRoll.setOnTouchListener { _, event ->
             event?.let { event ->
                 when (event.action) {
-                    MotionEvent.ACTION_DOWN ->{
+                    MotionEvent.ACTION_DOWN -> {
                         if(viewModel.isSettingMode()) {
                             rouletteView.startRolling()
-                        }}
+                        }
+                    }
                     MotionEvent.ACTION_UP ->{
                         if(rouletteView.isRolling) {
                             binding.btnRoll.isEnabled = false
@@ -109,6 +124,34 @@ class MainActivity : AppCompatActivity(), ScreenCaptureHelper.Captureable {
         }
 
         viewModel.setDefaultSettings()
+
+        askNotificationPermission()
+        registerFirebaseToken()
+
+    }
+
+    private fun askNotificationPermission() {
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if(ContextCompat.checkSelfPermission(this@MainActivity, Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED) {
+                //FCM SDK can pos notification!
+            }else if(shouldShowRequestPermissionRationale(Manifest.permission.POST_NOTIFICATIONS)){
+                //유저가 이전 권한 설정 창에서 거부를 누른 경우
+            }else {
+                requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+            }
+        }
+    }
+
+    private fun registerFirebaseToken() {
+        FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
+            if(task.isSuccessful) {
+                Toast.makeText(baseContext, "token init successful", Toast.LENGTH_SHORT).show()
+            }else{
+                //토큰 발급에 실패한 경우
+                Toast.makeText(baseContext, "token init fail", Toast.LENGTH_SHORT).show()
+                return@addOnCompleteListener
+            }
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -120,7 +163,6 @@ class MainActivity : AppCompatActivity(), ScreenCaptureHelper.Captureable {
         if(!rouletteView.isRolling) {
             when (item.itemId) {
                 R.id.action_list -> {
-
                     val dialog = ListDialog()
                     dialog.defaultList = rouletteView.getItems()
                     dialog.listener = object : ListDialog.OnListApply {

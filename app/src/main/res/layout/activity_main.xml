@@ -89,6 +89,7 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="16dp"
         android:layout_marginBottom="16dp"
+        android:backgroundTint="@color/primaryDark"
         android:text="@string/action_roll"
         android:textColor="#FFF"
         app:layout_constraintStart_toStartOf="parent"
