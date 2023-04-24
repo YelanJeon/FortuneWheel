@@ -29,7 +29,7 @@ class RouletteView : View {
         val p = Paint()
         p.textAlign = Paint.Align.CENTER
         p.textSize = Utils.dimensionToPixel(context, 24f)
-        p.color = resources.getColor(R.color.primary, null)
+        p.color = resources.getColor(R.color.primaryDark, null)
         p.isAntiAlias = true
         p
     }

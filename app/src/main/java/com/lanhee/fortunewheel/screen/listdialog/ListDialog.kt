@@ -69,8 +69,9 @@ class ListDialog : DialogFragment() {
     private fun createChip(text: String): Chip {
         val chip = Chip(context)
         chip.isCloseIconVisible = true
+
         chip.setOnCloseIconClickListener {
-            viewModel.deleteItem((it as Chip).text.toString())
+            viewModel.deleteItem((it.parent as ViewGroup).indexOfChild(it))
         }
         chip.text = text
         return chip

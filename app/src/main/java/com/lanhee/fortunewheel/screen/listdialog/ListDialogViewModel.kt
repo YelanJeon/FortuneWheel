@@ -22,9 +22,9 @@ class ListDialogViewModel: ViewModel() {
         setItems(temp.toTypedArray())
     }
 
-    fun deleteItem(target: String) {
+    fun deleteItem(index: Int) {
         val temp = MutableList(_items.value!!.size) { _items.value!![it] }
-        temp.remove(target)
+        temp.removeAt(index)
         setItems(temp.toTypedArray())
     }
 
