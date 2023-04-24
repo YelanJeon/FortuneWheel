@@ -39,7 +39,7 @@ class InputDialog : DialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.inputText.observe(this) {
+        viewModel.inputText.observe(viewLifecycleOwner) {
             binding.btnApply.isEnabled = !it.isNullOrEmpty()
         }
 

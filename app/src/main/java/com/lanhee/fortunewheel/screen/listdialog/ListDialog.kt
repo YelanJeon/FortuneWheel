@@ -34,7 +34,7 @@ class ListDialog : DialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.items.observe(this) {
+        viewModel.items.observe(viewLifecycleOwner) {
             binding.chgList.removeAllViews()
             it.forEach { item ->
                 binding.chgList.addView(createChip(item))
@@ -42,7 +42,7 @@ class ListDialog : DialogFragment() {
             binding.btnApply.isEnabled = it.size > 1
         }
 
-        viewModel.inputText.observe(this) {
+        viewModel.inputText.observe(viewLifecycleOwner) {
             binding.btnListAdd.isEnabled = !it.isNullOrEmpty()
         }
 

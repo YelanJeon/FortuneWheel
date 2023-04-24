@@ -20,6 +20,7 @@ import com.lanhee.fortunewheel.R
 import com.lanhee.fortunewheel.data.SaveData
 import com.lanhee.fortunewheel.databinding.DlgLoadBinding
 import com.lanhee.fortunewheel.utils.Utils
+import kotlinx.coroutines.Dispatchers
 
 class LoadDialog() : DialogFragment() {
     private val binding by lazy { DlgLoadBinding.inflate(layoutInflater) }
@@ -44,8 +45,8 @@ class LoadDialog() : DialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.list.observe(this) {
-            (recyclerView.adapter as LoadAdapter).submitList(it)
+        viewModel.list.observe(viewLifecycleOwner) {
+            (recyclerView.adapter as LoadAdapter).submitList(it.toMutableList())
             checkEmpty()
         }
 

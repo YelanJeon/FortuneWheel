@@ -14,6 +14,7 @@ import android.view.animation.DecelerateInterpolator
 import android.view.animation.LinearInterpolator
 import androidx.annotation.FloatRange
 import com.lanhee.fortunewheel.R
+import com.lanhee.fortunewheel.utils.Utils
 import java.util.*
 import kotlin.math.cos
 import kotlin.math.sin
@@ -27,7 +28,7 @@ class RouletteView : View {
     private val textPaint by lazy {
         val p = Paint()
         p.textAlign = Paint.Align.CENTER
-        p.textSize = 48f
+        p.textSize = Utils.dimensionToPixel(context, 24f)
         p.color = resources.getColor(R.color.primary, null)
         p.isAntiAlias = true
         p

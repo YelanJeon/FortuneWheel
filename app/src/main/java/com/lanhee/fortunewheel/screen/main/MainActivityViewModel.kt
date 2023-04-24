@@ -64,7 +64,7 @@ class MainActivityViewModel: ViewModel() {
     }
 
     fun saveItems(title: String) {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             databaseRepository.saveItems(title, _items.value!!)
         }
     }

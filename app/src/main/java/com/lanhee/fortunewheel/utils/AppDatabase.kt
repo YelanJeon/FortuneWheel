@@ -8,10 +8,14 @@ import androidx.room.TypeConverters
 import com.lanhee.fortunewheel.data.SaveConverters
 import com.lanhee.fortunewheel.data.SaveDao
 import com.lanhee.fortunewheel.data.SaveData
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 
 @Database(entities = [SaveData::class], version = 1)
 @TypeConverters(SaveConverters::class)
-abstract class AppDatabase: RoomDatabase(){
+abstract class AppDatabase(
+    val ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
+): RoomDatabase(){
     abstract fun saveDao(): SaveDao
 
     companion object {
