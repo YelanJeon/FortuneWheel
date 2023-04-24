@@ -1,6 +1,7 @@
 package com.lanhee.fortunewheel.screen.main
 
 import android.Manifest
+import android.animation.ObjectAnimator
 import android.content.pm.PackageManager
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
@@ -12,6 +13,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
+import androidx.core.animation.doOnEnd
 import androidx.core.content.ContextCompat
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.google.firebase.FirebaseApp
@@ -44,6 +46,15 @@ class MainActivity : AppCompatActivity(), ScreenCaptureHelper.Captureable {
         super.onCreate(savedInstanceState)
 
         installSplashScreen()
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            splashScreen.setOnExitAnimationListener { splashScreenView ->
+                val anim = ObjectAnimator.ofFloat(splashScreenView, View.ALPHA, 1f, 0f)
+                anim.duration = 1000
+                anim.doOnEnd { splashScreenView.remove() }
+                anim.start()
+            }
+        }
 
         setContentView(binding.root)
 
@@ -83,7 +94,7 @@ class MainActivity : AppCompatActivity(), ScreenCaptureHelper.Captureable {
                 if(viewModel.isSettingMode()) {
                     val dialog = InputDialog()
                     dialog.apply {
-                        title = resources.getString(R.string.title_changeItem)
+                        title = baseContext.resources.getString(R.string.title_changeItem)
                         hintText = defaultText
                         listener = object : InputDialog.OnInputText {
                             override fun onChanged(text: String) {
@@ -143,15 +154,7 @@ class MainActivity : AppCompatActivity(), ScreenCaptureHelper.Captureable {
     }
 
     private fun registerFirebaseToken() {
-        FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
-            if(task.isSuccessful) {
-                Toast.makeText(baseContext, "token init successful", Toast.LENGTH_SHORT).show()
-            }else{
-                //토큰 발급에 실패한 경우
-                Toast.makeText(baseContext, "token init fail", Toast.LENGTH_SHORT).show()
-                return@addOnCompleteListener
-            }
-        }
+        FirebaseMessaging.getInstance().token.addOnCompleteListener { }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
