@@ -1,8 +1,6 @@
 package com.lanhee.fortunewheel.screen.main
 
-import android.Manifest
 import android.animation.ObjectAnimator
-import android.content.pm.PackageManager
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -11,16 +9,15 @@ import android.view.MenuItem
 import android.view.MotionEvent
 import android.view.View
 import android.widget.Toast
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.core.animation.doOnEnd
-import androidx.core.content.ContextCompat
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import com.google.android.play.core.appupdate.AppUpdateManagerFactory
+import com.google.android.play.core.install.model.AppUpdateType
+import com.google.android.play.core.install.model.UpdateAvailability
 import com.google.firebase.FirebaseApp
-import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.ktx.Firebase
-import com.google.firebase.messaging.FirebaseMessaging
 import com.lanhee.fortunewheel.R
 import com.lanhee.fortunewheel.databinding.ActivityMainBinding
 import com.lanhee.fortunewheel.screen.listdialog.ListDialog
@@ -28,7 +25,6 @@ import com.lanhee.fortunewheel.screen.loaddialog.LoadDialog
 import com.lanhee.fortunewheel.screen.inputdialog.InputDialog
 import com.lanhee.fortunewheel.utils.ScreenCaptureHelper
 import com.lanhee.fortunewheel.widget.RouletteView
-import java.lang.RuntimeException
 
 class MainActivity : AppCompatActivity(), ScreenCaptureHelper.Captureable {
     private val rouletteView by lazy { binding.roulette }
@@ -37,10 +33,6 @@ class MainActivity : AppCompatActivity(), ScreenCaptureHelper.Captureable {
     private val viewModel: MainActivityViewModel by viewModels()
 
     private val firebaseAnalytics by lazy { Firebase.analytics }
-
-    val requestPermissionLauncher = registerForActivityResult(
-        ActivityResultContracts.RequestPermission()
-    ) { isGranted ->  }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -136,25 +128,19 @@ class MainActivity : AppCompatActivity(), ScreenCaptureHelper.Captureable {
 
         viewModel.setDefaultSettings()
 
-        askNotificationPermission()
-        registerFirebaseToken()
+        checkForUpdate()
 
     }
 
-    private fun askNotificationPermission() {
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            if(ContextCompat.checkSelfPermission(this@MainActivity, Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED) {
-                //FCM SDK can pos notification!
-            }else if(shouldShowRequestPermissionRationale(Manifest.permission.POST_NOTIFICATIONS)){
-                //유저가 이전 권한 설정 창에서 거부를 누른 경우
-            }else {
-                requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+    private fun checkForUpdate() {
+        val appUpdateManager = AppUpdateManagerFactory.create(baseContext)
+        val appUpdateInfoTask = appUpdateManager.appUpdateInfo
+        appUpdateInfoTask.addOnSuccessListener { appUpdateInfo ->
+            if(appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
+                && appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE)) {
+                appUpdateManager.startUpdateFlowForResult(appUpdateInfo, AppUpdateType.IMMEDIATE, this, 0)
             }
         }
-    }
-
-    private fun registerFirebaseToken() {
-        FirebaseMessaging.getInstance().token.addOnCompleteListener { }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

@@ -27,6 +27,9 @@ class MainActivityViewModel: ViewModel() {
     private val _intentToShare = MutableLiveData<Intent>()
     val intentToShare = _intentToShare as LiveData<Intent>
 
+    private val _intentToUpdate = MutableLiveData<Intent>()
+    val intentToUpdate = _intentToUpdate as LiveData<Intent>
+
     private val databaseRepository by lazy { DatabaseRepository(AppDatabase.getInstance()) }
 
     fun setItem(text: String, position: Int) {

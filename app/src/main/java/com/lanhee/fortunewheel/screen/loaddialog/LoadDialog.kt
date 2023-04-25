@@ -47,7 +47,7 @@ class LoadDialog() : DialogFragment() {
 
         viewModel.list.observe(viewLifecycleOwner) {
             (recyclerView.adapter as LoadAdapter).submitList(it.toMutableList())
-            checkEmpty()
+            binding.tvEmpty.visibility = if(it.isEmpty()) View.VISIBLE else View.GONE
         }
 
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
@@ -61,14 +61,6 @@ class LoadDialog() : DialogFragment() {
 
         viewModel.loadData()
 
-    }
-
-    private fun checkEmpty() {
-        if(viewModel.list.value!!.isEmpty()) {
-            binding.tvEmpty.visibility = View.VISIBLE
-        }else{
-            binding.tvEmpty.visibility = View.GONE
-        }
     }
 
     override fun onStart() {
